@@ -1,0 +1,14 @@
+- hosts: servers
+  become: yes
+
+  tasks:
+    - name: clone or update repo
+      git:
+        repo: https://github.com/Bafix001/devops-multi-container-app.git
+        dest: /root/devops-multi-container-app
+        version: main
+
+    - name: run docker compose
+      command: docker-compose up -d --build
+      args:
+        chdir: /root/devops-multi-container-app/infra
