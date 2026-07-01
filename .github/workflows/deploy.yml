@@ -23,7 +23,7 @@ jobs:
       - name: Deploy on server
         run: |
           ssh root@167.172.176.225 
-            cd /root/devops-multi-container-app &&
+            cd /home/azureuser/devops-multi-container-app
             git pull &&
             cd infra &&
             docker-compose up -d --build
