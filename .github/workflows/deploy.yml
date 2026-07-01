@@ -16,15 +16,15 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
 
-      - name: Add server
+      - name: Add server to known_hosts
         run: |
           ssh-keyscan -H 167.172.176.225 >> ~/.ssh/known_hosts
 
-      - name: Deploy on server
+      - name: Deploy on DigitalOcean
         run: |
-          ssh root@167.172.176.225 
-            cd /home/azureuser/devops-multi-container-app
-            git pull &&
-            cd infra &&
+          ssh root@167.172.176.225 << 'EOF'
+            cd /root/devops-multi-container-app
+            git pull
+            cd infra
             docker-compose up -d --build
-          
+          EOF
