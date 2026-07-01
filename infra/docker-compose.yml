@@ -41,5 +41,16 @@ services:
       timeout: 5s
       retries: 10
 
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+
 volumes:
   postgres_data:
