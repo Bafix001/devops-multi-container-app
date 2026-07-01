@@ -1,0 +1,30 @@
+name: Deploy V2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+      - name: Add server
+        run: |
+          ssh-keyscan -H 167.172.176.225 >> ~/.ssh/known_hosts
+
+      - name: Deploy on server
+        run: |
+          ssh root@167.172.176.225 "
+            cd /root/devops-multi-container-app &&
+            git pull &&
+            cd infra &&
+            docker-compose up -d --build
+          
